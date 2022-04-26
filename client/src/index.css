@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&family=Roboto:wght@300;400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body{
+    background-color: #494069;
+    height: 100%;
+}
