@@ -1,11 +1,12 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const connectDB = require("./config/db");
+// const connectDB = require("./config/db");
 const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const path = require("path");
+const mongoose = require("mongoose");
 
 const app = express();
 
@@ -13,7 +14,9 @@ dotenv.config();
 app.use(cors());
 app.use(express.json());
 
-connectDB();
+// connectDB();
+
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true, });
 
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
@@ -21,24 +24,25 @@ app.use("/api/message", messageRoutes);
 
 
 // Deployment section
-if(process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
+// if(process.env.NODE_ENV === 'production') {
+//   app.use(express.static('client/build'));
 
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
-} 
+//   app.get('*', (req, res) => {
+//     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+//   });
+// } 
 //End Deployment section
 
-const server = app.listen(process.env.PORT || 5000, console.log('Server is listening on PORT 5000'));
+const server = app.listen(process.env.PORT || 5000, () => {
+  console.log('Server is listening on PORT 5000')
+});
 
 
 //Sockets realtime
-const { instrument } = require("@socket.io/admin-ui");
 const io = require("socket.io")(server, {
     pingTimeout: 60000,
     cors: {
-        origin: ["http://localhost:3000", "https://admin.socket.io/"],
+        origin: ["http://localhost:3000"],
     },
 })
 
@@ -91,10 +95,6 @@ io.on("connection", (socket) => {
   });
 
 })
-
-instrument(io, {
-    auth: false
-  });
 
 
 //   socket.on('setup', (userData) => {

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const instance = axios.create({baseURL: "https://conn-chat-web-app.herokuapp.com/"});
+const instance = axios.create({baseURL: "http://localhost:5000/"});
 
 export const request = ({...options}) => {
     const user = JSON.parse(localStorage.getItem("user"));

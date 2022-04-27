@@ -12,7 +12,7 @@ import { RiChatSmile3Fill } from 'react-icons/ri';
 import Spinner from '../../assets/svg/Spinner';
 import io from 'socket.io-client';
 
-const ENDPOINT = "https://conn-chat-web-app.herokuapp.com/";
+const ENDPOINT = "http://localhost:5000/";
 var selectedChatCompare;
 var socket;
 const sendMessagesToServer = (data) => {
